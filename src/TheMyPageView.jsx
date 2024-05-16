@@ -39,7 +39,7 @@ function TheMyPageView() {
     return (
       <div>
         <p>Loading...</p>
-        <p>라우터 추가시 삭제할 코드</p>
+        {/* 라우터 :홈으로 돌아가기 */}
       </div>
     )
   }
@@ -66,26 +66,43 @@ function TheMyPageView() {
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="text-center">
-      <h1>마이 페이지</h1>
-      <div>
-        프로필 사진
-      </div>
-      <div>
-        <p>이메일 {userInfo.email}</p>
-        <p>닉네임 {userInfo.nickname}</p>
+    <div className="flex items-center h-screen w-full justify-center">
+      <div className="w-64">
+        <div className="bg-white shadow-xl rounded-lg py-3">
+          <div className="photo-wrapper p-2">
+            <img className="w-32 h-32 rounded-full mx-auto" src="https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp" alt="profile"/>
+          </div>
+          <div className="p-2">
+            <h3 className="text-center text-xl text-gray-900 font-medium leading-8">{userInfo.nickname}</h3>
+            <div className="text-center text-gray-400 text-xs font-semibold">
+              <p>@{userInfo.userId}</p>
+            </div>
+            <table className="text-xs my-3 flex items-center justify-center">
+              <tbody>
+                <tr className="">
+                  <td className="px-2 py-2 text-gray-500 font-semibold">Email</td>
+                  <td className="px-2 py-2">{userInfo.email}</td>
+                </tr>
+            </tbody></table>
+
+            <div className="text-center my-3">
+                <p className="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium m-2" href="#">회원정보 수정</p>
+                <p className="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="#">게시글 조회</p>
+            </div>
+            <div>
+              {/* 라우터 이용해서 view 변환 */}
+              <ul>
+                {boards.map(board => (
+                  <li key={board.id}>{board.title}</li>
+                ))}
+              </ul>
+            </div> 
+            <div className="flex justify-center items-center text-center">
+              <button className="middle none center rounded-lg bg-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" onClick={handleLogout}>로그아웃</button>
+
+            </div>
         </div>
-        <div>
-          <h1>내가 작성한 게시물</h1>
-          {/* 라우터 이용해서 view 변환 */}
-          <ul>
-            {boards.map(board => (
-              <li key={board.id}>{board.title}</li>
-            ))}
-          </ul>
-        </div> 
-        <button onClick={handleLogout}>로그아웃</button>
+        </div>
         </div>
     </div>
   )
