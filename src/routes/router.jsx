@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { PATH } from './constants'
 
-import { MainPage, SignUpPage } from '@/pages'
+import { MainPage, SignUpPage, LoginPage } from '@/pages'
 
 const router = createBrowserRouter([
   {
@@ -11,6 +11,10 @@ const router = createBrowserRouter([
   {
     path: PATH.SIGNUP,
     element: <SignUpPage />,
+  },
+  {
+    path: PATH.LOGIN,
+    element: <LoginPage />,
   },
 ])
 
