@@ -53,7 +53,7 @@ const SignUpPage = () => {
 
     // 회원가입 성공 후 메인 페이지로 이동
     console.log('회원가입이 완료되었습니다.')
-    navigate('/')
+    navigate('/login')
   }
 
   return (
