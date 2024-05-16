@@ -4,11 +4,12 @@ import { useState, useEffect } from "react"
 function TheMyPageView() {
   // const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState('');
+  const [boards, setBoards] = useState([])
 
   // 테스트용
   const [userInfo, setUserInfo] = useState({
+    userId: 1,
     email: "test@test.com",
-    name: "kim",
     nickname: "테스트 ",
   })
 
@@ -53,6 +54,17 @@ function TheMyPageView() {
     }
   };
 
+  const handleFetchPosts = async () => {
+    try {
+      // 서버에 사용자가 작성한 게시물 목록을 가져오는 요청을 보냄
+      const response = await axios.get(`http://localhost/board/${userInfo.userId}`);
+      setPosts(response.data);
+    } catch (error) {
+      setError('게시물을 가져오는데 실패하였습니다.');
+      console.error('게시물 가져오기 오류:', error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center">
       <div className="text-center">
@@ -62,9 +74,17 @@ function TheMyPageView() {
       </div>
       <div>
         <p>이메일 {userInfo.email}</p>
-        <p>이름 {userInfo.name}</p>
         <p>닉네임 {userInfo.nickname}</p>
-      </div>
+        </div>
+        <div>
+          <h1>내가 작성한 게시물</h1>
+          {/* 라우터 이용해서 view 변환 */}
+          <ul>
+            {boards.map(board => (
+              <li key={board.id}>{board.title}</li>
+            ))}
+          </ul>
+        </div> 
         <button onClick={handleLogout}>로그아웃</button>
         </div>
     </div>
