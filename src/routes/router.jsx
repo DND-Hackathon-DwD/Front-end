@@ -10,6 +10,7 @@ import {
   ContentsPage,
   HistoryPage,
   MyPage,
+  LandingPage,
 } from '@/pages'
 // import ContentsPage from '../pages/ContentsPage/[contentsId]'
 
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: PATH.MYPAGE,
     element: <MyPage />,
+  },
+  {
+    path: PATH.LANDING,
+    element: <LandingPage />,
   },
 ])
 
