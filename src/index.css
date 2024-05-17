@@ -30,3 +30,12 @@ textarea:focus {
 textarea::placeholder {
   color: rgb(153, 153, 153);
 }
+
+button:hover {
+  cursor: pointer;
+}
+
+button, input {
+  background-color: none;
+  border: noen;
+}
