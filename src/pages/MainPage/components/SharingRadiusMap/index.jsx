@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, MapMarker } from 'react-kakao-maps-sdk'
+import { Map, useMap, MapMarker } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
@@ -26,36 +26,58 @@ const SharingRadiusMap = () => {
     // 주변 나눔 리스트 목록 api 요청
     setSharingList([
       {
-        title: '카카오',
+        content: <div style={{ color: '#000' }}>카카오</div>,
         latlng: { lat: 33.450705, lng: 126.570677 },
       },
       {
-        title: '생태연못',
+        content: <div style={{ color: '#000' }}>생태연못</div>,
         latlng: { lat: 33.450936, lng: 126.569477 },
       },
       {
-        title: '텃밭',
+        content: <div style={{ color: '#000' }}>텃밭</div>,
         latlng: { lat: 33.450879, lng: 126.56994 },
       },
       {
-        title: '근린공원',
+        content: <div style={{ color: '#000' }}>근린공원</div>,
         latlng: { lat: 33.451393, lng: 126.570738 },
       },
     ])
   }, [])
 
-  const handleClickMap = (_, mouseEvent) => {
-    const geocoder = new kakao.maps.services.Geocoder()
-    geocoder.coord2Address(position.lng, position.lat, (result, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        setAddress(result[0].address.address_name)
-      }
-    })
+  const EventMarkerContainer = ({ position, content }) => {
+    const map = useMap()
+    const [isOpen, setIsOpen] = useState(false) //인포윈도우 open 여부 저장 state
 
-    setPosition({
-      lat: mouseEvent.latLng.getLat(),
-      lng: mouseEvent.latLng.getLng(),
-    })
+    return (
+      <MapMarker
+        position={position} // 마커를 표시할 위치
+        clickable={true}
+        // @ts-ignore
+        onClick={(marker) => {
+          setIsOpen(true)
+          map.panTo(marker.getPosition())
+        }}
+      >
+        {isOpen && (
+          <div style={{ minWidth: '150px' }}>
+            <img
+              alt="close"
+              width="14"
+              height="13"
+              src="https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/bt_close.gif"
+              style={{
+                position: 'absolute',
+                right: '5px',
+                top: '5px',
+                cursor: 'pointer',
+              }}
+              onClick={() => setIsOpen(false)}
+            />
+            <div style={{ padding: '5px', color: '#000' }}>Hello World!</div>
+          </div>
+        )}
+      </MapMarker>
+    )
   }
 
   return (
@@ -67,24 +89,20 @@ const SharingRadiusMap = () => {
           <Map
             id="map"
             className="w-full h-[600px] border-2 border-black"
-            center={initPosition}
+            center={{
+              // 지도의 중심좌표
+              lat: 33.450701,
+              lng: 126.570667,
+            }}
             level={4}
-            onClick={handleClickMap}
           >
             {/* sharingList size = 0이라면 infowindow 표시? */}
-            {sharingList.map((position, index) => (
+            {sharingList.map((value, index) => (
               // 만약 마감된 리스트라면 표시 안함!
-              <MapMarker
-                key={`${position.title}-${position.latlng}`}
-                position={position.latlng} // 마커를 표시할 위치
-                image={{
-                  src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-                  size: {
-                    width: 24,
-                    height: 35,
-                  }, // 마커이미지의 크기입니다
-                }}
-                title={position.title} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              <EventMarkerContainer
+                key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
+                position={value.latlng}
+                content={value.content}
               />
             ))}
           </Map>
