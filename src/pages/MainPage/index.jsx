@@ -6,6 +6,9 @@ const MainPage = () => {
   return (
     <div>
       <h1>Main Page</h1>
+      <Link to="/mypage">
+        <div>마이페이지</div>
+      </Link>
       <Link to="/posting">
         <div>게시물 작성하기</div>
       </Link>
