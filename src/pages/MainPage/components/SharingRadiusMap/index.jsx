@@ -1,7 +1,8 @@
 import React from 'react'
-import { Map, useMap, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk'
+import { Map, useMap, MapMarker } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import instance from '../../../../apis/apiClient'
 
 const SharingRadiusMap = () => {
   const navigate = useNavigate()
@@ -12,36 +13,43 @@ const SharingRadiusMap = () => {
   const [sharingList, setSharingList] = useState([])
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setInitPosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+    const getCurrentPosition = () => {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject)
       })
-      setPosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
+    }
+
+    const fetchData = async ({ lat, lng }) => {
+      try {
+        const response = await instance.get('/post/map', {
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsImlkIjo0LCJzdWIiOiJzdHJpbmdAbmF2ZXIuY29tIiwiZXhwIjoxNzE2MDY0MDI0fQ.0d630JtWlVMhTwwHrMaBwYyzG2Pd8MTzHMpYSB3oO8c`,
+          },
+
+          params: {
+            latitude: lat,
+            longitude: lng,
+            radius: 1.5,
+          },
+        })
+
+        console.log('Server response:', response.data)
+        return response.data.data
+      } catch (error) {
+        console.error('Error fetching data from server:', error)
+      }
+    }
+
+    getCurrentPosition().then((position) => {
+      const lat = position.coords.latitude
+      const lng = position.coords.longitude
+      setInitPosition({ latitude: lat, longitude: lng })
+      setPosition({ latitude: lat, longitude: lng })
+      fetchData({ lat, lng }).then((response) => {
+        console.log(response)
+        setSharingList(response.post_list)
       })
     })
-
-    // 주변 나눔 리스트 목록 api 요청
-    setSharingList([
-      {
-        content: <div style={{ color: '#000' }}>카카오</div>,
-        latlng: { lat: 33.450705, lng: 126.570677 },
-      },
-      {
-        content: <div style={{ color: '#000' }}>생태연못</div>,
-        latlng: { lat: 33.450936, lng: 126.569477 },
-      },
-      {
-        content: <div style={{ color: '#000' }}>텃밭</div>,
-        latlng: { lat: 33.450879, lng: 126.56994 },
-      },
-      {
-        content: <div style={{ color: '#000' }}>근린공원</div>,
-        latlng: { lat: 33.451393, lng: 126.570738 },
-      },
-    ])
   }, [])
 
   const EventMarkerContainer = ({ position, content }) => {
@@ -95,28 +103,19 @@ const SharingRadiusMap = () => {
         <div className="w-full h-full flex flex-col justify-center items-center gap-5">
           <div className="py-1 text-2xl font-bold">내 동네 설정하기</div>
           <p className="text-gray-600 font-semibold">{address}</p>
-          <Map
-            id="map"
-            className="w-full h-[600px] border-2 border-black"
-            center={{
-              // 지도의 중심좌표
-              lat: 33.450701,
-              lng: 126.570667,
-            }}
-            level={4}
-          >
+          <Map id="map" className="w-full h-[600px] border-2 " center={initPosition} level={4}>
             {/* sharingList size = 0이라면 infowindow 표시? */}
-            {sharingList.map((value, index) => (
-              // 만약 마감된 리스트라면 표시 안함!
-              <EventMarkerContainer
-                key={`EventMarkerContainer-${value.latlng.lat}-${value.latlng.lng}`}
-                position={value.latlng}
-                content={value.content}
-              />
-            ))}
-
-            <MapTypeControl position={'TOPRIGHT'} />
-            <ZoomControl position={'RIGHT'} />
+            {sharingList.map(
+              (value, index) => (
+                // 만약 마감된 리스트라면 표시 안함!
+                <EventMarkerContainer
+                  key={`EventMarkerContainer-${value.post_id}`}
+                  position={{ lat: value.latitude, lng: value.longitude }}
+                  //  content={value.content}
+                />
+              ),
+              //console.log(value),
+            )}
           </Map>
         </div>
       ) : (
