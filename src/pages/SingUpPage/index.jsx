@@ -12,7 +12,7 @@ const SignUpPage = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(false)
   const [isNicknameValid, setIsNicknameValid] = useState(false)
 
-  const [step, setStep] = useState(2)
+  const [step, setStep] = useState(1)
 
   const handleChangeId = (e) => {
     setId(e.target.value)
