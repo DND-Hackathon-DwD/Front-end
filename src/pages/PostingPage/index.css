@@ -1,16 +1,73 @@
 .postingContainer {
   width: 100%;
   height: 100%;
-  min-height: 932px;
   display: flex;
+  overflow-y: auto;
   flex-direction: column;
-  justify-content: space-between;
+  background-color: white;
 }
 
 .editorContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 32px 24px;
+  gap: 32px;
+}
+
+/* Image */
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.imageSelectBtn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid #FF9135;
+  font-size: 13px;
+  color: #737373;
+}
+
+.imageSelectIcon {
+  width: 16px;
+  height: 14px;
+}
+
+.previewContainer {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  gap: 16px;
+}
+
+.preview {
+  min-width: 80px;
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+/* text input */
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputContainer{
+  border-radius: 12px;
+  border: 1px solid #FF9135;
+  padding: 16px 16px 11px 16px;
 }
 
 .editorEmptySection {
@@ -18,9 +75,58 @@
   flex: 1;
 }
 
-.postingSubmitBtn {
-  padding: 8px;
-  background-color: black;
-  border-radius: 6px;
-  color: white;
+/* 모집 인원 */
+.memberList {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
 }
+.member {
+  display: flex;
+  width: 35px;
+  height: 48px;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #A3A3A3;
+  gap: 8px;
+  border-radius: 8px;
+  border: 1px solid #FF9135;
+}
+
+/* submit */
+.postingSubmitBtn {
+  display: flex;
+  width: 382px;
+  padding: 18px;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  gap: 8px;
+  border-radius: 8px;
+  background: #FF9135;
+}
+
+/* header */
+.header{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background-color: rgba(255, 237, 213, 0.8);
+}
+
+.prevBtn {
+  position: absolute;
+  left: 24px;
+  object-fit: cover;
+  width: 24px;
+  height: 24px;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-wieght: 500;
+}
+
