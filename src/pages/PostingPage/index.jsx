@@ -7,6 +7,7 @@ import {
 } from '@/assets/Icons'
 import { PrevIcon } from '../../assets/Icons'
 import { UserContext } from '../../context/userContext'
+import MenuBar from '../../components/MenuBar'
 
 
 export default function Posting() {
@@ -98,12 +99,6 @@ export default function Posting() {
 
   return (
     <div className="postingContainer">
-      <div className="header">
-        <button type='button' onClick={() => { console.log('이전 페이지로 이동 넣어줘어') }} className="prevBtn">
-          <PrevIcon />
-        </button>
-        <div className="headerTitle">글쓰기</div>
-      </div>
       <div className="editorContainer">
         <div className="imageContainer">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -221,6 +216,7 @@ export default function Posting() {
           <p className="text-[#fff] font-light">하기</p>
         </button>
       </div>
+      <MenuBar step={3} />
     </div>
   )
 }
