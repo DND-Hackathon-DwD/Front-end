@@ -5,5 +5,6 @@ export const PATH = {
   POSTING: '/posting',
   CONTENTSLIST: '/contents-list',
   CONTENTS: '/contents/:id',
-  HISTORY: '/history'
+  HISTORY: '/history',
+  MYPAGE: '/mypage',
 }
