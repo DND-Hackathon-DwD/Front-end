@@ -4,11 +4,12 @@ import '../index.css'
 
 const TextArea = ({
   placeholder,
-  id,
+  id = null,
   value,
   onChange,
-  style,
+  style = null,
   defaultValue,
+  disabled = false,
 }) => {
   const textareaRef = useRef(null)
 
@@ -22,6 +23,7 @@ const TextArea = ({
   return (
     <textarea
       ref={textareaRef}
+      disabled={disabled}
       onChange={(e) => {
         onChange(e)
         changeTitleHeight()
