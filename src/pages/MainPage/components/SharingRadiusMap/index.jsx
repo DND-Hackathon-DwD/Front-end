@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, useMap, MapMarker } from 'react-kakao-maps-sdk'
+import { Map, useMap, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
@@ -114,6 +114,9 @@ const SharingRadiusMap = () => {
                 content={value.content}
               />
             ))}
+
+            <MapTypeControl position={'TOPRIGHT'} />
+            <ZoomControl position={'RIGHT'} />
           </Map>
         </div>
       ) : (
