@@ -1,7 +1,7 @@
 import { RouterProvider } from 'react-router-dom'
 import { router } from './routes'
 import UserContextProvider from './context/userContext'
-import AuthGuard from './components/authGuard'
+// import AuthGuard from './components/authGuard'
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <UserContextProvider>
         <RouterProvider router={router} />
       </UserContextProvider>
-    </main >
+    </main>
   )
 }
 
