@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { LogoIcon, LogoSmallIcon, LeftArrowIcon } from '@/assets/Icons'
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -18,23 +19,23 @@ const LoginPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
-      <form className="w-4/5 h-full flex flex-col justify-center items-center gap-6">
-        <div className="py-4 px-2 flex flex-col w-full gap-1">
-          <h1 className="text-2xl font-bold">로그인</h1>
-          <p className="text-lg font-semibold">
-            로그인하여 다양한 해택을 누려보세요!
-          </p>
-        </div>
+      <div className="flex relative py-6 justify-center w-full">
+        <LeftArrowIcon className="absolute left-6 w-6 h-6" />
+        <p className="text-xl">로그인하기</p>
+      </div>
+      <i className="flex justify-center items-center w-full">
+        <LogoIcon className="w-48 h-48" />
+      </i>
+      <form className="w-full h-full px-6 flex flex-col justify-center items-center gap-6">
         <div className="flex flex-col w-full">
           <label className="flex gap-3 items-end text-red-500 pl-2">
-            <p className="text-lg font-bold text-gray-600">아이디</p>
-            <p className="text-sm font-semibold">아이디가 일치하지 않습니다.</p>
+            <p className="text-lg">이메일</p>
           </label>
-          <div className="w-full border border-black rounded-md">
+          <div className="w-full border border-primary rounded-xl overflow-hidden">
             <input
               type="text"
-              placeholder="아이디 입력 (6~20자)"
-              className="w-full rounded-md px-3 py-2 placeholder:text-sm"
+              placeholder="사용 중인 이메일 주소를 입력해주세요."
+              className="w-full rounded-md px-4 py-4 placeholder:text-sm"
               onChange={(e) => setId(e.target.value)}
               value={id}
             />
@@ -42,16 +43,13 @@ const LoginPage = () => {
         </div>
         <div className="flex flex-col w-full">
           <label className="flex gap-3 items-end text-red-500 pl-2">
-            <p className="text-lg font-bold text-gray-600">비밀번호</p>
-            <p className="text-sm font-semibold">
-              비밀번호가 일치하지 않습니다.
-            </p>
+            <p className="text-lg">비밀번호</p>
           </label>
-          <div className="w-full border border-black rounded-md">
+          <div className="w-full border border-primary rounded-xl overflow-hidden">
             <input
               type="text"
-              placeholder="비밀번호 입력 (문자, 숫자, 특수문자 포함 8~20자)"
-              className="w-full rounded-md px-3 py-2 placeholder:text-sm"
+              placeholder="6자 이상 입력해주세요."
+              className="w-full rounded-md px-4 py-4 placeholder:text-sm"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
@@ -60,10 +58,11 @@ const LoginPage = () => {
         <button
           type="submit"
           onClick={handleSubmit}
-          className="w-full bg-red-500 text-white font-bold py-2 rounded-md mt-4 disabled:transition-opacity disabled:opacity-50"
+          className={`w-full flex justify-center bg-primary items-center gap-1  text-white font-bold py-4 rounded-lg mt-4 disabled:bg-[#F5F5F5] disabled:border disabled:border-gray-400`}
           disabled={!id || !password}
         >
-          로그인
+          <LogoSmallIcon className={`w-10 ${!id || !password ? 'fill-gray-400' : 'fill-[#fff]'}`} />
+          <p className={`${!id || !password ? 'text-gray-400' : 'text-[#fff]'}`}>로그인하기</p>
         </button>
       </form>
     </div>
