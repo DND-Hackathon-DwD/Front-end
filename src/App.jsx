@@ -1,7 +1,12 @@
+import { RouterProvider } from 'react-router-dom'
+import { router } from './routes'
+
 function App() {
   return (
-    <main>
-      <h1 className="w-full flex justify-center bg-green-200">I'm Juha</h1>
+    <main className="h-dvh flex overflow-hidden relative">
+      <div className="mobileContainer">
+        <RouterProvider router={router} />
+      </div>
     </main>
   )
 }
