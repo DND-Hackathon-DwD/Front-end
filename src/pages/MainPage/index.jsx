@@ -1,14 +1,28 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
-import {
-  LogoIcon,
-  LogoSmallIcon,
-  DropDownIcon,
-  MarkIcon,
-  UsersIcon,
-  HomeIcon,
-  ListIcon,
-  SmileIcon,
-} from '@/assets/Icons'
+import { LogoIcon, LogoSmallIcon, DropDownIcon, MarkIcon, UsersIcon } from '@/assets/Icons'
+import { MenuBar } from '@/components'
+import apiClient from '@/apis/apiClient'
+
+const getUserInfo = async () => {
+  const response = await apiClient.get(`/user`, {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsImlkIjo0LCJzdWIiOiJzdHJpbmdAbmF2ZXIuY29tIiwiZXhwIjoxNzE2MDY0MDI0fQ.0d630JtWlVMhTwwHrMaBwYyzG2Pd8MTzHMpYSB3oO8c`,
+    },
+  })
+
+  return response.data.data
+}
+
+const getPostList = async (startPage) => {
+  const response = await apiClient.get(`/post?page=${startPage}&size=5`, {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsImlkIjo0LCJzdWIiOiJzdHJpbmdAbmF2ZXIuY29tIiwiZXhwIjoxNzE2MDY0MDI0fQ.0d630JtWlVMhTwwHrMaBwYyzG2Pd8MTzHMpYSB3oO8c`,
+    },
+  })
+
+  return response.data.data
+}
+
 const mockData = [
   {
     user_id: 'test',
@@ -77,17 +91,6 @@ const mockData = [
     post_id: 5,
   },
 ]
-const userInfo = {
-  id: 3,
-  user_id: 'test',
-  nickname: '김주하',
-  share_point: 100,
-  profile_image:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG9EF9qRYwrg2pMNBIyrUJVTHBNS7I3Zj2QqvWXyqzbw&s',
-  latitude: 37.497942,
-  longitude: 127.027621,
-  address: '서울특별시 강남구 역삼동 123-456',
-}
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -103,24 +106,49 @@ const formatDate = (dateString) => {
 
 const MainPage = () => {
   const endRef = useRef(null)
-  const [data, setData] = useState(mockData)
+  // const [data, setData] = useState(mockData)
+  const [user, setUser] = useState(null)
+  const [postList, setPostList] = useState([])
+  const [startPage, setStartPage] = useState(1)
 
-  const fetchData = () => {
-    setData((prevData) => prevData.concat(mockData))
+  const fetchData = async () => {
+    // setData((prevData) => prevData.concat(mockData))
+    console.log('?')
+    await getPostList(startPage).then((data) => {
+      setPostList((prev) => [...prev, ...data.post_list])
+      setStartPage((prevPage) => prevPage + 1)
+    })
   }
 
   const handleInfiniteScroll = useCallback((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         fetchData()
+        setStartPage((prevPage) => prevPage + 1)
       }
     })
   }, [])
 
   useEffect(() => {
+    getUserInfo().then(async (data) => {
+      setUser(data)
+      // getPostList(startPage).then((data) => {
+      //   setPostList(data.post_list)
+      //   setStartPage(startPage + 1)
+      //   console.log(data.post_list)
+      // })
+      if (postList.length === 0) {
+        await fetchData()
+      }
+    })
+  }, [])
+
+  console.log(postList)
+
+  useEffect(() => {
     if (endRef.current) {
       const observer = new IntersectionObserver(handleInfiniteScroll, {
-        threshold: 1.0,
+        threshold: 0.3,
       })
       observer.observe(endRef.current)
 
@@ -130,83 +158,100 @@ const MainPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start relative">
-      <div className="flex justify-between w-full items-end bg-[#FFEDD5]/[.8] pb-4 pt-8 px-6">
-        <LogoIcon className="w-[4.375rem]" />
-        <div className="flex items-center gap-1">
-          <p className="text-sm">{userInfo.address}</p>
-          <DropDownIcon className="w-4 h-4 cursor-pointer" />
-        </div>
-      </div>
-      <div className="flex flex-col relative h-full w-full items-center gap-6 py-8 overflow-y-scroll px-6">
-        {data &&
-          data.map((item, index) => (
-            <div
-              key={index}
-              className="w-full shrink-0 flex flex-col items-center bg-[#FFF7ED] rounded-xl shadow-md overflow-hidden"
-            >
-              <img
-                src={item.thumbnail}
-                alt="thumbnail"
-                className="w-full aspect-video object-cover"
-              />
-              <div className="flex flex-col w-full h-full justify-center px-5 py-4 gap-1">
-                <p className="text-2xl">{item.title}</p>
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-1 items-center text-primary font-light">
-                    <MarkIcon className="w-4 h-4" />
-                    <p>{Math.floor(item.distance)} m</p>
-                    <p>•</p>
-                    <p>{formatDate(item.create_date)}</p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <UsersIcon className="w-6 h-6" />
-                    <p className="text-gray-400 text-sm font-light">{`${item.current_recruited_num}/${item.max_recruited_num}`}</p>
+      {user ? (
+        <>
+          <div className="flex justify-between w-full items-end bg-[#FFEDD5]/[.8] pb-4 pt-8 px-6">
+            <LogoIcon className="w-[4.375rem]" />
+            <div className="flex items-center gap-1">
+              <p className="text-sm">{user.address}</p>
+              <DropDownIcon className="w-4 h-4 cursor-pointer" />
+            </div>
+          </div>
+          <div className="flex flex-col relative h-full w-full items-center gap-6 py-8 overflow-y-scroll px-6">
+            {postList &&
+              postList.map((item, index) => (
+                <div
+                  key={index}
+                  className="w-full shrink-0 flex flex-col items-center bg-[#FFF7ED] rounded-xl shadow-md overflow-hidden"
+                >
+                  <img
+                    src={item.thumbnail}
+                    alt="thumbnail"
+                    className="w-full aspect-video object-cover"
+                  />
+                  <div className="flex flex-col w-full h-full justify-center px-5 py-4 gap-1">
+                    <p className="text-2xl">{item.title}</p>
+                    <div className="flex justify-between items-center">
+                      <div className="flex gap-1 items-center text-primary font-light">
+                        <MarkIcon className="w-4 h-4" />
+                        <p>{Math.floor(item.distance)} m</p>
+                        <p>•</p>
+                        <p>{formatDate(item.create_date)}</p>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <UsersIcon className="w-6 h-6" />
+                        <p className="text-gray-400 text-sm font-light">{`${item.current_recruited_num}/${item.max_recruited_num}`}</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-400 py-6 truncate">{item.content}</p>
+                    {!item.recruited ? (
+                      <button className="flex text-white justify-center items-center py-3 gap-2 w-full bg-primary rounded-xl">
+                        <p className="text-[#fff] font-light">지금 당장</p>
+                        <LogoSmallIcon className="w-10" />
+                        <p className="text-[#fff] font-light">하기</p>
+                      </button>
+                    ) : (
+                      <button className="flex border border-primary justify-center items-center py-3 gap-2 w-full bg-[#FFF] rounded-xl">
+                        <p className="text-gray-400 font-light">아쉽지만</p>
+                        <LogoSmallIcon className="w-10 fill-primary" />
+                        <p className="text-gray-400 font-light">취소하기</p>
+                      </button>
+                    )}
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 py-6 truncate">{item.content}</p>
-                <button className="flex text-white justify-center items-center py-3 gap-2 w-full bg-primary rounded-xl">
-                  <p className="text-[#fff] font-light">지금 당장</p>
-                  <LogoSmallIcon className="w-10" />
-                  <p className="text-[#fff] font-light">하기</p>
+              ))}
+            <div ref={endRef} className="w-full h-4">
+              dasf
+            </div>
+            {/* <div className="fixed bottom-[7rem] w-full px-6">
+              <div className="w-full flex rounded-xl border-2 border-primary overflow-hidden">
+                <div className="flex flex-col gap-1.5 px-4 py-2.5 bg-[#FFF] items-center w-full">
+                  <div className="flex gap-1.5 items-center">
+                    <img src={user.profileImage} alt="image" className="w-8 h-8 rounded-md" />
+                    <p className="text-2xl text-primary font-semibold">{`반가워요, ${user.nickname}님!`}</p>
+                  </div>
+                  <p className="text-sm text-gray-400">즐거운 나눔의 기쁨을 경험해보세요😁</p>
+                </div>
+                <button className="flex flex-col justify-center items-center px-4 bg-primary">
+                  <LogoIcon className="w-25 fill-[#FFF]" />
+                  <p className="text-[#fff] text-xs whitespace-nowrap">게시글 쓰러가기</p>
                 </button>
               </div>
-            </div>
-          ))}
-        <div ref={endRef} className="w-full h-1" />
-        <div className="fixed bottom-[7rem] w-full px-6">
-          <div className="w-full flex rounded-xl border-2 border-primary overflow-hidden">
-            <div className="flex flex-col gap-1.5 px-4 py-2.5 bg-[#FFF] items-center w-full">
-              <div className="flex gap-1.5 items-center">
-                <img src={userInfo.profile_image} alt="image" className="w-8 h-8 rounded-md" />
-                <p className="text-2xl text-primary font-semibold">{`반가워요, ${userInfo.nickname}님!`}</p>
-              </div>
-              <p className="text-sm text-gray-400">즐거운 나눔의 기쁨을 경험해보세요😁</p>
-            </div>
-            <button className="flex flex-col justify-center items-center px-4 bg-primary">
-              <LogoIcon className="w-25 fill-[#FFF]" />
-              <p className="text-[#fff] text-xs whitespace-nowrap">게시글 쓰러가기</p>
-            </button>
+            </div> */}
           </div>
-        </div>
-      </div>
-      <div className="w-full flex gap-16 px-10 py-4 bg-[#FFF7ED]">
-        <i className="flex flex-col shrink-0 items-center">
-          <HomeIcon className="w-8 h-8 fill-primary" />
-          <p>main</p>
-        </i>
-        <i className="flex flex-col shrink-0 items-center">
-          <MarkIcon className="w-8 h-8 fill-[#D6D6D6]" />
-          <p>map</p>
-        </i>
-        <i className="flex flex-col shrink-0 items-center">
-          <ListIcon className="w-8 h-8" />
-          <p>list</p>
-        </i>
-        <i className="flex flex-col shrink-0 items-center">
-          <SmileIcon className="w-8 h-8" />
-          <p>my page</p>
-        </i>
-      </div>
+          <MenuBar step={1} />
+          {/* <div className="w-full flex gap-16 px-10 py-4 bg-[#FFF7ED]">
+            <i className="flex flex-col shrink-0 items-center">
+              <HomeIcon className="w-8 h-8 fill-primary" />
+              <p>main</p>
+            </i>
+            <i className="flex flex-col shrink-0 items-center">
+              <MarkIcon className="w-8 h-8 fill-[#D6D6D6]" />
+              <p>map</p>
+            </i>
+            <i className="flex flex-col shrink-0 items-center">
+              <PencilIcon className="w-8 h-8" />
+              <p>post</p>
+            </i>
+            <i className="flex flex-col shrink-0 items-center">
+              <SmileIcon className="w-8 h-8" />
+              <p>my page</p>
+            </i>
+          </div> */}
+        </>
+      ) : (
+        <div>loading...</div>
+      )}
     </div>
   )
 }
