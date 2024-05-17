@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState, useEffect } from "react"
 const { VITE_REACT_API_URL } = import.meta.env;
 
-function TheMyPageView() {
+function MyPage() {
   const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState('');
   const [boards, setBoards] = useState([])
@@ -110,4 +110,4 @@ function TheMyPageView() {
   )
 }
 
-export default TheMyPageView
+export default MyPage
