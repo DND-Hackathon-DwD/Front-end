@@ -1,39 +1,41 @@
 import axios from 'axios'
 import { useState, useEffect } from "react"
+const { VITE_REACT_API_URL } = import.meta.env;
 
 function TheMyPageView() {
-  // const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState('');
   const [boards, setBoards] = useState([])
 
   // 테스트용
-  const [userInfo, setUserInfo] = useState({
-    userId: 1,
-    email: "test@test.com",
-    nickname: "테스트 ",
-  })
+  // const [userInfo, setUserInfo] = useState({
+  //   user_id: 2,
+  //   email: "test@test.com",
+  //   nickname: "테스트 ",
+  // })
 
-  // useEffect(() => {
-  //   const getUserInfo = async () => {
-  //     try {
-  //       // 현재 로그인 중이라면
-  //       // 토큰 만료 확인 추가
-  //       // 서버에 GET 요청을 보내고, 현재 로그인 중인 회원의 정보를 받아옴
-  //       const response = await axios.get('http://localhost/userInfo');
-  //       setUserInfo(response.data);
-  //        
-  //       
-  //       // 로그인 중이 아니라면
-  //       // 로그인 페이지로 이동
-  //
-  //     } catch (error) {
-  //       setError('회원 정보를 가져오는데 실패하였습니다.');
-  //       console.error('회원 정보 가져오기 오류:', error);
-  //     }
-  //   }
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        // 현재 로그인 중이라면
+        // 토큰 만료 확인 추가
+        // 서버에 GET 요청을 보내고, 현재 로그인 중인 회원의 정보를 받아옴
+        // const response = await axios.get(VITE_REACT_API_URL + `user/mypage/${userInfo.userId}`);
+        const response = await axios.get(VITE_REACT_API_URL + `user/mypage/2`);
+        setUserInfo(response.data.data);
+        console.log(response.status)
+        
+        // 로그인 중이 아니라면
+        // 로그인 페이지로 이동
+  
+      } catch (error) {
+        setError('회원 정보를 가져오는데 실패하였습니다.');
+        console.error('회원 정보 가져오기 오류:', error);
+      }
+    }
     
-  //   getUserInfo()
-  // }, []);
+    getUserInfo()
+  }, []);
 
   if (!userInfo) {
     return (
@@ -57,7 +59,7 @@ function TheMyPageView() {
   const handleFetchPosts = async () => {
     try {
       // 서버에 사용자가 작성한 게시물 목록을 가져오는 요청을 보냄
-      const response = await axios.get(`http://localhost/board/${userInfo.userId}`);
+      const response = await axios.get(VITE_REACT_API_URL + `post/user/${userInfo.user_id}`);
       setPosts(response.data);
     } catch (error) {
       setError('게시물을 가져오는데 실패하였습니다.');
@@ -75,7 +77,7 @@ function TheMyPageView() {
           <div className="p-2">
             <h3 className="text-center text-xl text-gray-900 font-medium leading-8">{userInfo.nickname}</h3>
             <div className="text-center text-gray-400 text-xs font-semibold">
-              <p>@{userInfo.userId}</p>
+              <p>@{userInfo.user_id}</p>
             </div>
             <table className="text-xs my-3 flex items-center justify-center">
               <tbody>
@@ -86,8 +88,8 @@ function TheMyPageView() {
             </tbody></table>
 
             <div className="text-center my-3">
-                <p className="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium m-2" href="#">회원정보 수정</p>
-                <p className="text-xs text-indigo-500 hover:underline hover:text-indigo-600 font-medium" href="#">게시글 조회</p>
+                <a className="text-xs text-indigo-500 hover:text-indigo-600 font-medium m-2" href="#">회원정보 수정</a>
+                <a className="text-xs text-indigo-500 hover:text-indigo-600 font-medium" href="#" onClick={handleFetchPosts}>게시글 조회</a>
             </div>
             <div>
               {/* 라우터 이용해서 view 변환 */}
