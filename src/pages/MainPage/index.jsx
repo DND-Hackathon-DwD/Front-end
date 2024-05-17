@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
 
 const MainPage = () => {
-  const sample = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+  const sample = [1, 2, 3, 4, 5, 6, 7, 8]
 
   return (
     <div>
+      <h1>Main Page</h1>
       <h1>Main Page</h1>
       <Link to="/posting">
         <div>게시물 작성하기</div>
