@@ -2,15 +2,11 @@ import axios from 'axios';
 import { USER } from './endpoint'
 
 export const getMe = async () => {
-  const apiUrl = process.env.VITE_REACT_API_URL;
-  const config = {
+  const token = localStorage.getItem('token')
+  console.log(token, USER)
+  return await axios.get(`${USER}`, {
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
-    },
-  }
-  return await axios.get(`${apiUrl}/${USER}`, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
+      'Authorization': `Bearer ${token}`,
     },
   })
 }

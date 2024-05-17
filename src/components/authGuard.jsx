@@ -1,8 +1,7 @@
-export { UserContext, UserContextProvider };
+import { UserContext } from '../context/userContext';
 
-import { UserContext } from '@/contexts/user_context';
 import { useContext, useEffect, useState } from 'react';
-import { redirect, usePathname } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 
 export default function AuthGuard({
@@ -11,14 +10,21 @@ export default function AuthGuard({
 }) {
   const { user, init } = useContext(UserContext);
   const [show, setShow] = useState(false);
-  const params = usePathname();
+  // const navigate = useNavigate();
+  const params = window.location.pathname;
+
+  console.log('user')
+  console.log(user)
 
   useEffect(() => {
-    if (!init) {
-      return
-    }
+    console.log('authguard')
+    console.log(init, user, params, withRedirect)
+    // if (!init) {
+    //   return
+    // }
 
     if (user != null) {
+      console.log(user, 'user is not null')
       setShow(true)
     }
 
@@ -27,9 +33,12 @@ export default function AuthGuard({
     }
 
     if (withRedirect && user == null) {
-      redirect('/login')
+      // redirect('/login')
+      // navigate('/login')
+      console.log('login이동')
+      // location.href = '/login'
     }
-  }, [user, params, withRedirect, init]);
+  }, [user, params]);
 
   return show ? <> {children}</> : null;
 }

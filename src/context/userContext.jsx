@@ -1,7 +1,7 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { getMe } from '../apis/user';
 
-const UserContext = createContext({
+export const UserContext = createContext({
   init: false,
   user: null,
   setUser: () => null,
@@ -10,7 +10,7 @@ const UserContext = createContext({
 });
 
 function UserContextProvider({ children }) {
-  const [init, setInit] = useState(false);
+  // const [init, setInit] = useState(false);
   const [user, setUser] = useState(null);
 
   function logout() {
@@ -19,12 +19,13 @@ function UserContextProvider({ children }) {
 
   async function login() {
     try {
-      const response = await axios.post('', requestBody);
+      const apiUrl = import.meta.env.VITE_REACT_API_URL
+      const response = await axios.post(`${apiUrl}/user/login`, requestBody);
       const responseJson = await response.json()
       localStorage.setItem('token', responseJson.data.access_token);
       localStorage.setItem('refresh_token', responseJson.data.refresh_token);
       setUser(responseJson.data)
-      setInit(true)
+      // setInit(true)
     }
     catch (e) {
       console.log(e)
@@ -32,13 +33,16 @@ function UserContextProvider({ children }) {
   }
 
   useEffect(() => {
+    // console.log('usercontext')
     (async () => {
       try {
-        setUser(await getMe());
+        const response = await getMe()
+
+        setUser(response.data);
       } catch (error) {
         console.log(error)
       }
-      setInit(true);
+      // setInit(true);
     })();
   }, []);
 
@@ -46,3 +50,5 @@ function UserContextProvider({ children }) {
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
+
+export default UserContextProvider
