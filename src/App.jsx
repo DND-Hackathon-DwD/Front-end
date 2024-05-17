@@ -4,9 +4,7 @@ import { router } from './routes'
 function App() {
   return (
     <main className="h-dvh flex overflow-hidden relative">
-      <div className="mobileContainer">
-        <RouterProvider router={router} />
-      </div>
+      <RouterProvider router={router} />
     </main>
   )
 }

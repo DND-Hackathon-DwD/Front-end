@@ -14,14 +14,6 @@ body {
   background-color: rgba(250, 250, 250, 1);
 }
 
-.mobileContainer {
-  width: 100%;
-  max-width: 430px;
-  min-height: 932px;
-  margin: auto;
-  background-color: white;
-}
-
 textarea {
   border: none;
   line-height: 1.2;
