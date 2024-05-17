@@ -11,14 +11,11 @@ const MyPositionSetting = () => {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      setInitPosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      })
-      setPosition({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      })
+      const lat = position.coords.latitude
+      const lng = position.coords.longitude
+
+      setInitPosition({ lat, lng })
+      setPosition({ lat, lng })
     })
   }, [])
 
