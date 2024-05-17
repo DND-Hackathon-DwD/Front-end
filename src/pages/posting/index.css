@@ -1,10 +1,26 @@
 .postingContainer {
   width: 100%;
   height: 100%;
+  min-height: 932px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.editorContainer {
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .editorEmptySection {
+  display: block;
   flex: 1;
+}
+
+.postingSubmitBtn {
+  padding: 8px;
+  background-color: black;
+  border-radius: 6px;
+  color: white;
 }
