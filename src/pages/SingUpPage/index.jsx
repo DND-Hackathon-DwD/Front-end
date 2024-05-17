@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { MyPositionSetting } from './components'
+import { LeftArrowIcon, LogoIcon, LogoSmallIcon } from '@/assets/Icons'
+import { useNavigate } from 'react-router-dom'
 
 const SignUpPage = () => {
+  const navigate = useNavigate()
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
   const [nickname, setNickname] = useState('')
@@ -56,66 +59,84 @@ const SignUpPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
+      <div className="flex relative py-6 justify-center w-full">
+        <LeftArrowIcon className="absolute left-6 w-6 h-6" onClick={() => navigate('/landing')} />
+        <p className="text-xl">회원가입하기</p>
+      </div>
+
       {step === 1 ? (
-        <form className="w-4/5 h-full flex flex-col justify-center items-center gap-6">
-          <div className="py-4 px-2 flex flex-col w-full gap-1">
-            <h1 className="text-2xl font-bold">회원가입</h1>
-            <p className="text-lg font-semibold">회원이 되어 다양한 해택을 누려보세요!</p>
-          </div>
-          <div className="flex flex-col w-full">
-            <label className="flex gap-3 items-end text-red-500 pl-2">
-              <p className="text-lg font-bold text-gray-600">아이디</p>
-              <p className="text-sm font-semibold">{idFailMsg}</p>
-            </label>
-            <div className="w-full border border-black rounded-md">
-              <input
-                type="text"
-                placeholder="아이디 입력 (6~20자)"
-                className="w-full rounded-md px-3 py-2 placeholder:text-sm"
-                onChange={handleChangeId}
-                value={id}
-              />
+        <>
+          <i className="flex justify-center items-center w-full">
+            <LogoIcon className="w-48 h-48" />
+          </i>
+          <form className="w-4/5 h-full flex flex-col justify-center items-center gap-6">
+            <div className="flex flex-col w-full">
+              <label className="flex gap-3 items-end text-red-500 pl-2">
+                <p className="text-lg">이메일</p>
+                <p className="text-sm font-semibold">{idFailMsg}</p>
+              </label>
+              <div className="w-full border border-primary rounded-xl overflow-hidden">
+                <input
+                  type="text"
+                  placeholder="사용 중인 이메일 주소를 입력해주세요."
+                  className="w-full rounded-md px-4 py-4 placeholder:text-sm"
+                  onChange={handleChangeId}
+                  value={id}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col w-full">
-            <label className="flex gap-3 items-end text-red-500 pl-2">
-              <p className="text-lg font-bold text-gray-600">비밀번호</p>
-              <p className="text-sm font-semibold">{passwordFailMsg}</p>
-            </label>
-            <div className="w-full border border-black rounded-md">
-              <input
-                type="text"
-                placeholder="비밀번호 입력 (문자, 숫자, 특수문자 포함 8~20자)"
-                className="w-full rounded-md px-3 py-2 placeholder:text-sm"
-                onChange={handleChangePassword}
-                value={password}
-              />
+            <div className="flex flex-col w-full">
+              <label className="flex gap-3 items-end text-red-500 pl-2">
+                <p className="text-lg">비밀번호</p>
+                <p className="text-sm font-semibold">{passwordFailMsg}</p>
+              </label>
+              <div className="w-full border border-primary rounded-xl overflow-hidden">
+                <input
+                  type="text"
+                  placeholder="6자 이상 입력해주세요."
+                  className="w-full rounded-md px-4 py-4 placeholder:text-sm"
+                  onChange={handleChangePassword}
+                  value={password}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col w-full">
-            <label className="flex gap-3 items-end text-red-500 pl-2">
-              <p className="text-lg font-bold text-gray-600">닉네임</p>
-              <p className="text-sm font-semibold">{nicknameFailMsg}</p>
-            </label>
-            <div className="w-full border border-black rounded-md">
-              <input
-                type="text"
-                placeholder="닉네임을 입력해주세요"
-                className="w-full rounded-md px-3 py-2 placeholder:text-sm"
-                onChange={handleChangeNickname}
-                value={nickname}
-              />
+            <div className="flex flex-col w-full">
+              <label className="flex gap-3 items-end text-red-500 pl-2">
+                <p className="text-lg">닉네임</p>
+                <p className="text-sm font-semibold">{nicknameFailMsg}</p>
+              </label>
+              <div className="w-full border border-primary rounded-xl overflow-hidden">
+                <input
+                  type="text"
+                  placeholder="원하시는 닉네임을 자유롭게 입력해주세요."
+                  className="w-full rounded-md px-4 py-4 placeholder:text-sm"
+                  onChange={handleChangeNickname}
+                  value={nickname}
+                />
+              </div>
             </div>
-          </div>
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="w-full bg-red-500 text-white font-bold py-2 rounded-md mt-4 disabled:transition-opacity disabled:opacity-50"
-            disabled={!isIdValid || !isPasswordValid || !isNicknameValid}
-          >
-            회원가입
-          </button>
-        </form>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className={`w-full flex justify-center ${!isIdValid || !isPasswordValid || !isNicknameValid ? 'bg-[#f5f5f5]]' : 'bg-primary'} items-center gap-1 font-bold py-4 rounded-lg mt-2 disabled:border disabled:border-gray-400`}
+              disabled={!isIdValid || !isPasswordValid || !isNicknameValid}
+            >
+              <p
+                className={`${!isIdValid || !isPasswordValid || !isNicknameValid ? 'text-gray-400' : 'text-[#fff]'}`}
+              >
+                지금 바로
+              </p>
+              <LogoSmallIcon
+                className={`w-10 ${!isIdValid || !isPasswordValid || !isNicknameValid ? 'fill-gray-400' : 'fill-[#fff]'}`}
+              />
+              <p
+                className={`${!isIdValid || !isPasswordValid || !isNicknameValid ? 'text-gray-400' : 'text-[#fff]'}`}
+              >
+                회원가입하기
+              </p>
+            </button>
+          </form>
+        </>
       ) : (
         <MyPositionSetting />
       )}
