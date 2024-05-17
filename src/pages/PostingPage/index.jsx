@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react'
 import TextArea from '../../components/customTextArea'
 // import axios from 'axios'
 import './index.css'
+import {
+  LogoSmallIcon,
+} from '@/assets/Icons'
+
 
 export default function Posting() {
   const number = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -213,8 +217,10 @@ export default function Posting() {
           </div>
         </div>
 
-        <button type="submit" className="postingSubmitBtn" onClick={submit}>
-          submit
+        <button type="submit" onClick={submit} className="flex text-white justify-center items-center py-3 gap-2 w-full bg-primary rounded-xl">
+          <p className="text-[#fff] font-light">지금 당장</p>
+          <LogoSmallIcon className="w-10" />
+          <p className="text-[#fff] font-light">하기</p>
         </button>
       </div>
     </div>
