@@ -5,7 +5,7 @@ const MenuBar = (step) => {
   const navigate = useNavigate()
 
   return (
-    <div className="w-full flex gap-16 px-10 py-4 bg-[#FFF7ED]">
+    <div className="w-full flex px-10 py-4 bg-[#FFF7ED]" style={{ justifyContent: 'space-between' }}>
       <i className="flex flex-col shrink-0 items-center" onClick={() => navigate('/')}>
         <HomeIcon className={`w-8 h-8 ${step.step === 1 ? 'fill-primary' : 'fill-[#D6D6D6]'}`} />
         <p>main</p>

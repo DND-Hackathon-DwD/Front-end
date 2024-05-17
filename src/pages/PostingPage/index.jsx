@@ -1,14 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import TextArea from '../../components/customTextArea'
 // import axios from 'axios'
 import './index.css'
 import {
   LogoSmallIcon,
 } from '@/assets/Icons'
+import { PrevIcon } from '../../assets/Icons'
+import { UserContext } from '../../context/userContext'
+import MenuBar from '../../components/MenuBar'
 
 
 export default function Posting() {
   const number = [1, 2, 3, 4, 5, 6, 7, 8]
+  const { user } = useContext(UserContext)
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
   const [files, setFiles] = useState([])
@@ -55,25 +59,20 @@ export default function Posting() {
       return
     }
     const formData = new FormData()
-    formData.append('title', title)
-    formData.append('text', text)
-    formData.append('file', file)
-    // 다음 형식으로 보내야하나..?
-    // "post": {
-    //   "title": "string",
-    //   "content": "string",
-    //   "user_id": 0,
-    //   "latitude": 0,
-    //   "longitude": 0,
-    //   "address": "string",
-    //   "min_num": 0,
-    //   "max_num": 0,
-    //   "share_time": "2024-05-17T19:31:32.892Z",
-    //   "deadline": "2024-05-17T19:31:32.892Z"
-    // },
-    // "files": [
-    //   "string"
-    // ]
+    formData.append('files', files)
+
+    const post = {
+      "title": title,
+      "content": text,
+      "user_id": user.id,
+      "latitude": place.x,
+      "longitude": place.y,
+      "address": place.address,
+      "min_num": minMember,
+      "max_num": maxMember,
+      "share_time": date,
+      "deadline": date
+    }
 
     try {
       // await axios.post('/api/upload', formData, {
@@ -100,12 +99,6 @@ export default function Posting() {
 
   return (
     <div className="postingContainer">
-      <div className="header">
-        <button type='button' onClick={() => { console.log('이전 페이지로 이동 넣어줘어') }} className="prevBtn">
-          .
-        </button>
-        <div className="headerTitle">글쓰기</div>
-      </div>
       <div className="editorContainer">
         <div className="imageContainer">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -223,6 +216,7 @@ export default function Posting() {
           <p className="text-[#fff] font-light">하기</p>
         </button>
       </div>
+      <MenuBar step={3} />
     </div>
   )
 }

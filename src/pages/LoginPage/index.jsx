@@ -1,18 +1,17 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LogoIcon, LogoSmallIcon, LeftArrowIcon } from '@/assets/Icons'
+import { UserContext } from '../../context/userContext'
 
 const LoginPage = () => {
   const navigate = useNavigate()
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
+  const { login } = useContext(UserContext)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // 서버로 로그인 요청을 보내는 코드
-    // ID, 비밀번호 확인 처리 코드 필요
-
-    // 로그인 성공 후 메인 페이지로 이동
+    login(id, password)
     console.log('로그인이 완료되었습니다.')
     navigate('/')
   }
