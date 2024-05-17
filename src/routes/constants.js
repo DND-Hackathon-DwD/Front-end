@@ -7,4 +7,5 @@ export const PATH = {
   CONTENTS: '/contents/:id',
   HISTORY: '/history',
   MYPAGE: '/mypage',
+  LANDING: '/landing',
 }
