@@ -20,13 +20,13 @@ const LoginPage = () => {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="flex relative py-6 justify-center w-full">
-        <LeftArrowIcon className="absolute left-6 w-6 h-6" />
+        <LeftArrowIcon className="absolute left-6 w-6 h-6" onClick={() => navigate('/landing')} />
         <p className="text-xl">로그인하기</p>
       </div>
       <i className="flex justify-center items-center w-full">
         <LogoIcon className="w-48 h-48" />
       </i>
-      <form className="w-full h-full px-6 flex flex-col justify-center items-center gap-6">
+      <form className="w-full h-full px-6 py-10 flex flex-col items-center gap-6">
         <div className="flex flex-col w-full">
           <label className="flex gap-3 items-end text-red-500 pl-2">
             <p className="text-lg">이메일</p>
@@ -54,11 +54,15 @@ const LoginPage = () => {
               value={password}
             />
           </div>
+          <div className="flex justify-between text-sm text-gray-400 py-4">
+            <p>비밀번호 찾기</p>
+            <p>회원가입</p>
+          </div>
         </div>
         <button
           type="submit"
           onClick={handleSubmit}
-          className={`w-full flex justify-center bg-primary items-center gap-1  text-white font-bold py-4 rounded-lg mt-4 disabled:bg-[#F5F5F5] disabled:border disabled:border-gray-400`}
+          className={`w-full flex justify-center bg-primary items-center gap-1  text-white font-bold py-4 rounded-lg mt-2 disabled:bg-[#F5F5F5] disabled:border disabled:border-gray-400`}
           disabled={!id || !password}
         >
           <LogoSmallIcon className={`w-10 ${!id || !password ? 'fill-gray-400' : 'fill-[#fff]'}`} />
