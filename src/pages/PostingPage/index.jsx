@@ -5,6 +5,7 @@ import './index.css'
 import {
   LogoSmallIcon,
 } from '@/assets/Icons'
+import { PrevIcon } from '../../assets/Icons'
 
 
 export default function Posting() {
@@ -102,7 +103,7 @@ export default function Posting() {
     <div className="postingContainer">
       <div className="header">
         <button type='button' onClick={() => { console.log('이전 페이지로 이동 넣어줘어') }} className="prevBtn">
-          .
+          <PrevIcon />
         </button>
         <div className="headerTitle">글쓰기</div>
       </div>
