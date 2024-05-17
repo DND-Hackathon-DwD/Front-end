@@ -46,7 +46,7 @@ function UserContextProvider({ children }) {
     })();
   }, []);
 
-  const value = useMemo(() => ({ user, setUser, logout, init, login }), [user, setUser, init]);
+  const value = useMemo(() => ({ user, setUser, logout, login }), [user, setUser]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
