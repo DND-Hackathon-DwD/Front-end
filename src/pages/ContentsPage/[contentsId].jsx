@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-export default function Contents() {
+export default function ContentsPage() {
   const { id } = useParams()
 
   return (

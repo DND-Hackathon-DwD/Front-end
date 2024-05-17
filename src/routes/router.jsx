@@ -1,7 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { PATH } from './constants'
 
-import { MainPage, SignUpPage, LoginPage } from '@/pages'
+import {
+  MainPage,
+  SignUpPage,
+  LoginPage,
+  PostingPage,
+  ContentsListPage,
+  ContentsPage,
+} from '@/pages'
+// import ContentsPage from '../pages/ContentsPage/[contentsId]'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +23,18 @@ const router = createBrowserRouter([
   {
     path: PATH.LOGIN,
     element: <LoginPage />,
+  },
+  {
+    path: PATH.POSTING,
+    element: <PostingPage />,
+  },
+  {
+    path: PATH.CONTENTSLIST,
+    element: <ContentsListPage />,
+  },
+  {
+    path: PATH.CONTENTS,
+    element: <ContentsPage />,
   },
 ])
 
