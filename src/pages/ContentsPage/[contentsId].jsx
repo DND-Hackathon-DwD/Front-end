@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 
 export default function ContentsPage() {
   const { id } = useParams()
-  const { state, setState } = useState()
+  const [isVisible, setIsVisible] = useState(true)
 
   const handleJoin = () => {
-    console.log('띱 합니다')
+    setIsVisible(!isVisible)
   }
   return (
     <div className="flex flex-col justify-center items-center h-full w-full">
@@ -34,16 +34,18 @@ export default function ContentsPage() {
         <div>게시글 내용</div>
         <div>나눔 위치</div>
         <div>모집 인원 수(최소 ~ 최대)</div>
+        <div>만나는 시간</div>
       </div>
+      {/* { userInfo.나눔자 ? 띱 버튼 보이기 : 안보이기} */}
       <div>
         <button
-          className="middle none center rounded-lg bg-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className={`middle none center rounded-lg bg-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${isVisible ? '' : 'hidden'}`}
           onClick={handleJoin}
         >
           띱!
         </button>
         <button
-          className="middle none center rounded-lg bg-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className={`middle none center rounded-lg bg-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${isVisible ? 'hidden' : ''}`}
           onClick={handleJoin}
         >
           띱 취소
