@@ -40,7 +40,7 @@ function App() {
       <UserContextProvider>
         <RouterProvider router={router} />
       </UserContextProvider>
-    </main >
+    </main>
   )
 }
 
