@@ -1,0 +1,6 @@
+export { default as MainPage } from './MainPage'
+export { default as SignUpPage } from './SingUpPage'
+export { default as LoginPage } from './LoginPage'
+export { default as PostingPage } from './PostingPage'
+export { default as ContentsListPage } from './ContentsListPage'
+export { default as ContentsPage } from './ContentsPage/[contentsId]'
