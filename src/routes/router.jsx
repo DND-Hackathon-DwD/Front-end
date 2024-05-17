@@ -9,6 +9,7 @@ import {
   ContentsListPage,
   ContentsPage,
   HistoryPage,
+  MyPage,
 } from '@/pages'
 // import ContentsPage from '../pages/ContentsPage/[contentsId]'
 
@@ -40,7 +41,11 @@ const router = createBrowserRouter([
   {
     path: PATH.HISTORY,
     element: <HistoryPage />,
-  }
+  },
+  {
+    path: PATH.MYPAGE,
+    element: <MyPage />,
+  },
 ])
 
 export default router
