@@ -1,5 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
 import { getMe } from '../apis/user';
+import axios from 'axios';
 
 export const UserContext = createContext({
   init: false,
@@ -17,11 +18,14 @@ function UserContextProvider({ children }) {
     setUser(null);
   }
 
-  async function login() {
+  async function login(userId, passwd) {
     try {
+      console.log('login')
       const apiUrl = import.meta.env.VITE_REACT_API_URL
-      const response = await axios.post(`${apiUrl}/user/login`, requestBody);
-      const responseJson = await response.json()
+      const response = await axios.post(`${apiUrl}/user/login`, { "user_id": userId, "password": passwd });
+      console.log(response)
+      const responseJson = response.data
+      // const responseJson = await response.json()
       localStorage.setItem('token', responseJson.data.access_token);
       localStorage.setItem('refresh_token', responseJson.data.refresh_token);
       setUser(responseJson.data)
