@@ -59,7 +59,7 @@ const SharingRadiusMap = () => {
         }}
       >
         {isOpen && (
-          <div style={{ minWidth: '150px' }}>
+          <div className="min-h-auto min-w-auto" style={{ minWidth: '150px' }}>
             <img
               alt="close"
               width="14"
@@ -73,7 +73,16 @@ const SharingRadiusMap = () => {
               }}
               onClick={() => setIsOpen(false)}
             />
-            <div style={{ padding: '5px', color: '#000' }}>Hello World!</div>
+            <div>게시글 리스트 컴포넌트</div>
+            <button
+              className=""
+              onClick={() => {
+                // navigation('/contents/:id')
+                console.log('상세 보기로 이동할게요')
+              }}
+            >
+              상세 보기
+            </button>
           </div>
         )}
       </MapMarker>
