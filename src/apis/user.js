@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 import { USER } from './endpoint'
 
 export const getMe = async () => {
@@ -6,10 +6,9 @@ export const getMe = async () => {
   console.log(token, USER)
   return await axios.get(`${USER}`, {
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
 }
 
 export default getMe
-
