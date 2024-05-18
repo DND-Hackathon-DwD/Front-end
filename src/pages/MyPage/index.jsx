@@ -1,57 +1,23 @@
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MyPositionSetting } from './components'
-
-const { VITE_REACT_API_URL } = import.meta.env
+import { UserContext } from '../../context/userContext'
+import { LogoIcon } from '../../assets/Icons'
+import { MenuBar } from '@/components'
+import review_white from '../../assets/imgs/review_white.png'
+import review_orange from '../../assets/imgs/review_orange.png'
+import review_mid from '../../assets/imgs/review_mid.png'
 
 function MyPage() {
-  // const [userInfo, setUserInfo] = useState(null)
+  const { user } = useContext(UserContext)
   const [error, setError] = useState('')
   const [step, setStep] = useState(1)
 
-  // 테스트용 추후 삭제
-  const [userInfo, setUserInfo] = useState({
-    user_id: 2,
-    email: 'test@test.com',
-    nickname: '테스트 ',
-  })
-
-  // useEffect(() => {
-  //   const getUserInfo = async () => {
-  //     try {
-  //       // 현재 로그인 중이라면
-  //       // 토큰 만료 확인 추가
-  //       // 서버에 GET 요청을 보내고, 현재 로그인 중인 회원의 정보를 받아옴
-  //       // const response = await axios.get(VITE_REACT_API_URL + `user/mypage/${userInfo.userId}`);
-  //       const response = await axios.get(VITE_REACT_API_URL + `/user/mypage/1`)
-  //       setUserInfo(response.data.data)
-  //       console.log(response.status)
-
-  //       // 로그인 중이 아니라면
-  //       // 로그인 페이지로 이동
-  //     } catch (error) {
-  //       setError('회원 정보를 가져오는데 실패하였습니다.')
-  //       console.error('회원 정보 가져오기 오류:', error)
-  //     }
-  //   }
-
-  //   getUserInfo()
-  // }, [])
-
-  if (!userInfo) {
-    return (
-      <div>
-        <p>Loading...</p>
-        {/* 라우터 :홈으로 돌아가기 */}
-      </div>
-    )
-  }
+  console.log(user)
 
   const handleLogout = async () => {
     try {
-      setUserInfo(null)
-      //sessionStorage.removeItem("accessToken")
-      //sessionStorage.removeItem("refreshToken")
+      user.logout()
     } catch (error) {
       console.error(error)
     }
@@ -71,55 +37,52 @@ function MyPage() {
     <div className="flex flex-col justify-center items-center h-full w-full bg-white shadow-xl rounded-lg py-3">
       {step === 1 ? (
         <div>
-          <div className="photo-wrapper p-2">
+          <div className="flex justify-center">
+            <div className="z-0 absolute inline-flex h-[1040px] w-[1040px] rounded-full bg-primary opacity-10 translate-y-20"></div>
+            <div className="z-10 absolute inline-flex h-[634px] w-[634px] rounded-full bg-primary opacity-30 translate-y-[15rem]"></div>
+            <div className="z-20 absolute inline-flex h-[454px] w-[454px] rounded-full bg-primary opacity-30 translate-y-[24rem]"></div>
+            <div className="z-30 absolute inline-flex h-[272px] w-[272px] rounded-full bg-primary opacity-30 translate-y-[30rem]"></div>
+          </div>
+          <div className="releative photo-wrapper p-2 top-2 z-50">
             <img
-              className="w-32 h-32 rounded-full mx-auto"
+              className="w-[160px] h-[160px] rounded-xl mx-auto"
               src="https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
               alt="profile"
             />
-          </div>
-          <div className="p-2">
-            <h3 className="text-center text-xl text-gray-900 font-medium leading-8">
-              {userInfo.nickname}
+            <h3 className=" text-center text-2xl text-gray-900 mt-3 font-[HS-Regular] text-primary font-medium leading-8">
+              {user.nickname}
             </h3>
-            <div className="text-center text-gray-400 text-xs font-semibold">
-              <p>@{userInfo.user_id}</p>
-            </div>
-            <table className="text-xs my-3 flex items-center justify-center">
-              <tbody>
-                <tr className="">
-                  <td className="px-2 py-2 text-gray-500 font-semibold">Email</td>
-                  <td className="px-2 py-2">{userInfo.email}</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div className="text-center my-3">
-              <p>내가 받은 포인트</p>
-              <p>내가 준 포인트</p>
-            </div>
-
-            <div className="text-center my-3">
-              <a className="text-xs text-indigo-500 hover:text-indigo-600 font-medium m-2" href="#">
-                회원정보 수정
-              </a>
-              <a
-                className="text-xs text-indigo-500 hover:text-indigo-600 font-medium"
-                href="#"
-                onClick={handleLocalAuth}
-              >
-                새로운 동네 인증
-              </a>
-            </div>
-            <div className="flex justify-center items-center text-center">
-              <button
-                className="middle none center rounded-lg bg-indigo-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                onClick={handleLogout}
-              >
-                로그아웃
-              </button>
+            <div className="text-center text-[#000000] text-opacity-20 text-[11px] font-semibold">
+              <p>{user.email}</p>
             </div>
           </div>
+          <div className="p-2 ">
+            <div className="flex flex-row items-center justify-center text-lg p-6 pl-2 pr-2 border border-primary text-primary text-center rounded-2xl z-[100] bg-[#ffffff] bg-opacity-50 my-3 mb-[27rem]  w-[382px] h-[31px]">
+              <p className="text-sm">실천하신 나눔이 </p>{' '}
+              <p className="flex flex-row items-center text-3xl p-2">
+                <p className="font-[HS-Regular]">{user.sharePoint ? user.sharePoint : '0'}</p>
+                <i className="flex justify-center items-center pl-3">
+                  <LogoIcon className="h-24" />
+                </i>
+              </p>
+              <p className="text-sm"> 모였어요💛</p>
+            </div>
+
+            <div className="">
+              <i className="flex justify-center items-center pl-3">
+                <LogoIcon className="absolute w-[192px] h-[98px] z-[100] -translate-y-[8rem] fill-[#ffffff]" />
+              </i>
+
+              <img className="absolute -translate-y-[26rem] z-[50]" src={review_white} alt="" />
+              <img className="absolute -translate-y-[6rem] z-[50]" src={review_orange} alt="" />
+              <img
+                className="absolute translate-x-[14rem] -translate-y-[22rem] z-[50]"
+                src={review_mid}
+                alt=""
+              />
+            </div>
+          </div>
+          <MenuBar className="z-[100] mt-10" step={4} />
         </div>
       ) : (
         <MyPositionSetting setStep={setStep} />
