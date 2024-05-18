@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import apiClient from '@/apis/apiClient'
 import { LogoSmallIcon, CalendarIcon, UsersIcon, MarkIcon } from '@/assets/Icons'
+import { useNavigate } from 'react-router-dom'
 
 const getPostList = async (id) => {
   const response = await apiClient.get(`/post/${id}`, {
@@ -27,6 +28,7 @@ const formatDate = (dateString) => {
 }
 
 export default function ContentsPage() {
+  const navigate = useNavigate()
   const { id } = useParams()
   const [detail, setDetail] = useState({})
   const [center, setCenter] = useState(null)
@@ -91,6 +93,7 @@ export default function ContentsPage() {
             <div className="w-full px-6">
               <button
                 type="submit"
+                onClick={() => navigate('/')}
                 className={`w-full flex justify-center bg-primary items-center gap-1 font-bold py-4 rounded-lg mt-4`}
               >
                 <p className={`text-[#fff]`}>지금 바로</p>
