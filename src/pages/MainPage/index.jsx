@@ -2,6 +2,9 @@ import { useRef, useEffect, useState, useCallback } from 'react'
 import { LogoIcon, LogoSmallIcon, DropDownIcon, MarkIcon, UsersIcon } from '@/assets/Icons'
 import { MenuBar } from '@/components'
 import apiClient from '@/apis/apiClient'
+import { useNavigate } from 'react-router-dom'
+import './index.css'
+import { DDip } from '../../assets/Icons'
 
 const getUserInfo = async () => {
   const response = await apiClient.get(`/user`, {
@@ -110,6 +113,7 @@ const MainPage = () => {
   const [user, setUser] = useState(null)
   const [postList, setPostList] = useState([])
   const [startPage, setStartPage] = useState(1)
+  const [isClicked, setClicked] = useState([])
 
   const fetchData = async () => {
     // setData((prevData) => prevData.concat(mockData))
@@ -143,6 +147,7 @@ const MainPage = () => {
     })
   }, [])
 
+  const navigate = useNavigate()
   console.log(postList)
 
   useEffect(() => {
@@ -155,6 +160,12 @@ const MainPage = () => {
       return () => observer.disconnect()
     }
   }, [handleInfiniteScroll])
+
+  useEffect(() => {
+    if (isClicked.length === 0) return;
+    setTimeout(() => setClicked([]), 800)
+
+  }, [isClicked])
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start relative">
@@ -172,13 +183,22 @@ const MainPage = () => {
               postList.map((item, index) => (
                 <div
                   key={index}
+                  style={{ position: 'relative' }}
                   className="w-full shrink-0 flex flex-col items-center bg-[#FFF7ED] rounded-xl shadow-md overflow-hidden"
                 >
-                  <img
-                    src={item.thumbnail_image}
-                    alt="thumbnail"
-                    className="w-full aspect-video object-cover"
-                  />
+                  {isClicked.includes(item.post_id) && <div className='imageContainer'>
+                    {/* <img className='image' src={'../../assets/ddip.png'} alt='띱!'>
+                    </img> */}
+                    <div className="image">ㄸiP</div>
+                  </div>}
+                  <button onClick={() => { navigate(`/contents/${item.post_id}`) }}>
+                    <img
+                      src={item.thumbnail_image}
+                      alt="thumbnail"
+                      className="w-full aspect-video object-cover"
+                    />
+
+                  </button>
                   <div className="flex flex-col w-full h-full justify-center px-5 py-4 gap-1">
                     <p className="text-2xl">{item.title}</p>
                     <div className="flex justify-between items-center">
@@ -195,7 +215,8 @@ const MainPage = () => {
                     </div>
                     <p className="text-xs text-gray-400 py-6 truncate">{item.content}</p>
                     {!item.recruited ? (
-                      <button className="flex text-white justify-center items-center py-3 gap-2 w-full bg-primary rounded-xl">
+                      <button className="flex text-white justify-center items-center py-3 gap-2 w-full bg-primary rounded-xl"
+                        onClick={() => { setClicked((c) => [...c, item.post_id]) }}>
                         <p className="text-[#fff] font-light">지금 당장</p>
                         <LogoSmallIcon className="w-10" />
                         <p className="text-[#fff] font-light">하기</p>
