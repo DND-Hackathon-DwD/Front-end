@@ -1,0 +1,43 @@
+@keyframes moveAndDisappear {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw);
+    opacity: 1;
+  }
+}
+
+@keyframes disappear {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+}
+
+.imageContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #FF9135;
+  /* animation: disappear 1s; */
+}
+
+.image {
+  position: absolute;
+  z-index: 100;
+  margin: auto;
+  left: 0;
+  top: 40%;
+  color: white;
+  font-size: 80px;
+  font-weight: 800;
+  transform: translateY(-50%);
+  animation: moveAndDisappear 0.8s ease forwards;
+}
