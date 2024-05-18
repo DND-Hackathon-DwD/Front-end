@@ -2,7 +2,7 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
-const MyPositionSetting = () => {
+const MyPositionSetting = ({ onClick }) => {
   const navigate = useNavigate()
   const { kakao } = window
   const [initPosition, setInitPosition] = useState(null)
@@ -36,33 +36,35 @@ const MyPositionSetting = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // 서버로 회원가입 요청을 보내는 코드
-    // ID, 닉네임 중복 확인 처리 코드 필요
-    console.log('회원 가입 완료')
-    navigate('/login')
+    if (onClick) onClick(position, address)
   }
 
   return (
     <>
       {initPosition ? (
-        <div className="w-full h-full flex flex-col justify-center items-center gap-5">
-          <div className="py-1 text-2xl font-bold">내 동네 설정하기</div>
-          <p className="text-gray-600 font-semibold">{address}</p>
+        <div className="w-full h-full flex flex-col justify-center items-center gap-5 z-10"
+          style={{ position: 'relative' }}>
+          {/* <div className="py-1 text-2xl font-bold">내 동네 설정하기</div> */}
           <Map
             id="map"
-            className="w-full h-[600px] border-2 border-black"
+            className="w-full h-full"
+            style={{ minHeight: 250 }}
             center={initPosition}
             level={4}
             onClick={handleClickMap}
           >
+            <p className="text-gray-600 font-semibold"
+              style={{ position: 'absolute', zIndex: 100, top: 10, borderRadius: 8, padding: 8, background: '#ff9135', color: 'white' }}
+            >{address}</p>
             <MapMarker position={position} />
+            <button
+              onClick={handleSubmit}
+              style={{ position: 'absolute', zIndex: 100, bottom: 10, borderRadius: 8, padding: 8, background: '#ff9135', color: 'white' }}
+              className="bg-red-500 text-white py-2 rounded-md mt-4"
+            >
+              내 위치 설정
+            </button>
           </Map>
-          <button
-            onClick={handleSubmit}
-            className="w-3/5 bg-red-500 text-white font-bold py-2 rounded-md mt-4"
-          >
-            내 위치 설정
-          </button>
         </div>
       ) : (
         <div>위치 정보를 불러오는 중입니다...</div>
