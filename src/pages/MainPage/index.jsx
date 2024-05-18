@@ -175,7 +175,7 @@ const MainPage = () => {
                   className="w-full shrink-0 flex flex-col items-center bg-[#FFF7ED] rounded-xl shadow-md overflow-hidden"
                 >
                   <img
-                    src={item.thumbnail}
+                    src={item.thumbnail_image}
                     alt="thumbnail"
                     className="w-full aspect-video object-cover"
                   />
