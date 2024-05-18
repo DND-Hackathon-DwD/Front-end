@@ -79,7 +79,6 @@ export default function Posting() {
       "share_time": date,
       "deadline": date
     }
-
     const body = { post: new Blob([post], { type: 'application/json' }), files: formData }
 
     formData.append('post', new Blob([JSON.stringify(post)], { type: 'application/json' })
