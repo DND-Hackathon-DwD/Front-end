@@ -2,7 +2,7 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
-const MyPositionSetting = ({ onClick }) => {
+const MyPositionSetting = (onClick) => {
   const navigate = useNavigate()
   const { kakao } = window
   const [initPosition, setInitPosition] = useState(null)
@@ -36,14 +36,17 @@ const MyPositionSetting = ({ onClick }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (onClick) onClick(position, address)
+    if (onClick.onClick) onClick(position, address)
+    navigate('/login')
   }
 
   return (
     <>
       {initPosition ? (
-        <div className="w-full h-full flex flex-col justify-center items-center gap-5 z-10"
-          style={{ position: 'relative' }}>
+        <div
+          className="w-full h-full flex flex-col justify-center items-center gap-5 z-10"
+          style={{ position: 'relative' }}
+        >
           {/* <div className="py-1 text-2xl font-bold">내 동네 설정하기</div> */}
           <Map
             id="map"
@@ -53,13 +56,32 @@ const MyPositionSetting = ({ onClick }) => {
             level={4}
             onClick={handleClickMap}
           >
-            <p className="text-gray-600 font-semibold"
-              style={{ position: 'absolute', zIndex: 100, top: 10, borderRadius: 8, padding: 8, background: '#ff9135', color: 'white' }}
-            >{address}</p>
+            <p
+              className="text-gray-600 font-semibold"
+              style={{
+                position: 'absolute',
+                zIndex: 100,
+                top: 10,
+                borderRadius: 8,
+                padding: 8,
+                background: '#ff9135',
+                color: 'white',
+              }}
+            >
+              {address}
+            </p>
             <MapMarker position={position} />
             <button
               onClick={handleSubmit}
-              style={{ position: 'absolute', zIndex: 100, bottom: 10, borderRadius: 8, padding: 8, background: '#ff9135', color: 'white' }}
+              style={{
+                position: 'absolute',
+                zIndex: 100,
+                bottom: 10,
+                borderRadius: 8,
+                padding: 8,
+                background: '#ff9135',
+                color: 'white',
+              }}
               className="bg-red-500 text-white py-2 rounded-md mt-4"
             >
               내 위치 설정
