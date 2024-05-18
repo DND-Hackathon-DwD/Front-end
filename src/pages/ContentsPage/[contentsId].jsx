@@ -5,6 +5,9 @@ import apiClient from '@/apis/apiClient'
 import { LogoSmallIcon, CalendarIcon, UsersIcon, MarkIcon } from '@/assets/Icons'
 import { useNavigate } from 'react-router-dom'
 
+import '../MainPage/index.css'
+
+
 const getPostList = async (id) => {
   const response = await apiClient.get(`/post/${id}`, {
     headers: {
@@ -32,6 +35,8 @@ export default function ContentsPage() {
   const { id } = useParams()
   const [detail, setDetail] = useState({})
   const [center, setCenter] = useState(null)
+  const [isClicked, setClicked] = useState(false)
+
 
   useEffect(() => {
     getPostList(id).then((data) => {
@@ -40,10 +45,19 @@ export default function ContentsPage() {
     })
   }, [id])
 
+  useEffect(() => {
+    if (!isClicked) return;
+    setTimeout(() => setClicked(false), 800)
+
+  }, [isClicked])
+
   return (
     <div className="flex flex-col h-full w-full">
       {detail && (
         <>
+          {isClicked && <div className='imageContainer' style={{ zIndex: 10000 }}>
+            <div className="image">ㄸiP</div>
+          </div>}
           <i className="flex w-full h-[35%]">
             <img src={detail.thumbnail_image} alt="image" className="object-cover w-full" />
           </i>
@@ -93,7 +107,11 @@ export default function ContentsPage() {
             <div className="w-full px-6">
               <button
                 type="submit"
-                onClick={() => navigate('/')}
+                onClick={() => {
+                  setClicked(true)
+                  setTimeout(() => navigate('/'), 800)
+                  // navigate('/')
+                }}
                 className={`w-full flex justify-center bg-primary items-center gap-1 font-bold py-4 rounded-lg mt-4`}
               >
                 <p className={`text-[#fff]`}>지금 바로</p>

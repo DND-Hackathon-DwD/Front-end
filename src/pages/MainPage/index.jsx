@@ -187,8 +187,6 @@ const MainPage = () => {
                   className="w-full shrink-0 flex flex-col items-center bg-[#FFF7ED] rounded-xl shadow-md overflow-hidden"
                 >
                   {isClicked.includes(item.post_id) && <div className='imageContainer'>
-                    {/* <img className='image' src={'../../assets/ddip.png'} alt='띱!'>
-                    </img> */}
                     <div className="image">ㄸiP</div>
                   </div>}
                   <button onClick={() => { navigate(`/contents/${item.post_id}`) }}>
