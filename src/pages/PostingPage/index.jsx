@@ -8,7 +8,10 @@ import {
 import { PrevIcon } from '../../assets/Icons'
 import { UserContext } from '../../context/userContext'
 import MenuBar from '../../components/MenuBar'
-
+import MyPositionSetting from '../SingUpPage/components/MyPositionSetting'
+import { POST } from '../../apis/endpoint'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function Posting() {
   const number = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -21,6 +24,8 @@ export default function Posting() {
   const [maxMember, setMaxMember] = useState(0)
   const [place, setPlace] = useState(null)
   const [date, setDate] = useState()
+  const [show, setShow] = useState(false)
+  const navigate = useNavigate()
 
   const fileChange = (e) => {
     const selectedFiles = Array.from(e.target.files)
@@ -60,8 +65,9 @@ export default function Posting() {
     }
     const formData = new FormData()
     formData.append('files', files)
-
+    console.log(user.id)
     const post = {
+      "user_id": user.id,
       "title": title,
       "content": text,
       "user_id": user.id,
@@ -74,20 +80,28 @@ export default function Posting() {
       "deadline": date
     }
 
+    const body = { post: new Blob([post], { type: 'application/json' }), files: formData }
+
+    formData.append('post', new Blob([JSON.stringify(post)], { type: 'application/json' })
+    )
+
+    console.log(body)
     try {
-      // await axios.post('/api/upload', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // })
+      await axios.post(`${POST}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      })
       alert('업로드가 완료되었습니다.')
+      navigate('/')
     } catch (error) {
+      console.log(error)
       alert('실패하였습니다. 다시 시도해주세요', error)
     }
   }
 
   useEffect(() => {
-    console.log(files)
     if (files.length > 0) {
       const newPreviews = files.map((file) => URL.createObjectURL(file));
       setPreviews(newPreviews);
@@ -146,7 +160,6 @@ export default function Posting() {
         <div className="imageContainer">
           <div style={{ fontSize: '18px' }}>모집인원</div>
           <div className="memberList">
-
             {number.map((n) => {
               return <button className='member'
                 style={{
@@ -166,20 +179,28 @@ export default function Posting() {
             })}
           </div>
         </div>
+
         <div className="inputSection">
           <div style={{ fontSize: '18px' }}>띱! 나눔장소</div>
           <button type='button' className="inputContainer" onClick={() => {
-            // 지도 선택 화면 보여주기
+            setShow(true)
           }}>
             <TextArea
               placeholder="나눔을 진행할 장소를 선택해주세요."
               disabled={true}
+              value={place !== null ? place.address : null}
               onChange={(e) => {
                 e.stopPropagation()
                 setDate(e.currentTarget.value)
               }}
             />
           </button>
+          {show && <div style={{ padding: '24px', borderRadius: '16px', overflow: 'hidden' }}>
+            <MyPositionSetting onClick={(position, address) => {
+              setPlace({ x: position.lat, y: position.lng, address: address })
+              setShow(false)
+            }} />
+          </div>}
         </div>
         <div className="inputSection">
           <div style={{ fontSize: '18px' }}>띱! 나눔일정</div>
