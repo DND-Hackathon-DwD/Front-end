@@ -42,8 +42,10 @@ const MyPositionSetting = ({ onClick }) => {
   return (
     <>
       {initPosition ? (
-        <div className="w-full h-full flex flex-col justify-center items-center gap-5 z-10"
-          style={{ position: 'relative' }}>
+        <div
+          className="w-full h-full flex flex-col justify-center items-center gap-5 z-10"
+          style={{ position: 'relative' }}
+        >
           {/* <div className="py-1 text-2xl font-bold">내 동네 설정하기</div> */}
           <Map
             id="map"
